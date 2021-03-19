@@ -1002,7 +1002,7 @@ PYBIND11_MODULE(_bimpy, m) {
 	m.def("set_scroll_x", [](float scroll_x) { ImGui::SetScrollX(scroll_x); }, py::arg("scroll_x"));
 	m.def("set_scroll_y", [](float scroll_y) { ImGui::SetScrollY(scroll_y); }, py::arg("scroll_y"));
     // OBSOLETED in 1.66 (from Sep 2018)
-	m.def("set_scroll_here", &ImGui::SetScrollHere, py::arg("center_y_ratio") = 0.5f);
+	// m.def("set_scroll_here", &ImGui::SetScrollHere, py::arg("center_y_ratio") = 0.5f);
 	m.def("set_scroll_here_x", &ImGui::SetScrollHereX, py::arg("center_x_ratio") = 0.5f);
 	m.def("set_scroll_here_y", &ImGui::SetScrollHereY, py::arg("center_y_ratio") = 0.5f);
 	m.def("set_scroll_from_pos_x", [](float pos_x, float center_x_ratio) { ImGui::SetScrollFromPosX(pos_x, center_x_ratio); }, py::arg("pos_x"), py::arg("center_x_ratio") = 0.5f);
