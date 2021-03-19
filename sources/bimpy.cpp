@@ -983,6 +983,22 @@ PYBIND11_MODULE(_bimpy, m) {
 	m.def("get_window_content_region_min", &ImGui::GetWindowContentRegionMin);
 	m.def("get_window_content_region_max", &ImGui::GetWindowContentRegionMax);
 	m.def("get_window_content_region_width", &ImGui::GetWindowContentRegionWidth);
+	m.def("get_main_viewport_pos", []() {
+		auto* viewport = ImGui::GetMainViewport();
+		return viewport ? viewport->WorkPos : ImVec2(0, 0);
+	});
+	m.def("get_main_viewport_size", []() {
+		auto* viewport = ImGui::GetMainViewport();
+		return viewport ? viewport->WorkSize : ImVec2(0, 0);
+	});
+	m.def("get_window_viewport_pos", []() {
+		auto* viewport = ImGui::GetWindowViewport();
+		return viewport ? viewport->WorkPos : ImVec2(0, 0);
+	});
+	m.def("get_window_viewport_size", []() {
+		auto* viewport = ImGui::GetWindowViewport();
+		return viewport ? viewport->WorkSize : ImVec2(0, 0);
+	});
 	m.def("get_font_size", &ImGui::GetFontSize);
 	m.def("set_window_font_scale", &ImGui::SetWindowFontScale);
 	m.def("get_window_pos", &ImGui::GetWindowPos);
