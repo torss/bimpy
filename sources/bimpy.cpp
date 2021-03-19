@@ -150,6 +150,9 @@ void Context::Init(int width, int height, const std::string& name,
 	m_imgui = ImGui::CreateContext();
 	ImGui::SetCurrentContext(m_imgui);
 
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
 	ImGui_ImplGlfw_InitForOpenGL(m_window, false);
 	ImGui_ImplOpenGL3_Init(glsl_version);
 
@@ -511,6 +514,7 @@ PYBIND11_MODULE(_bimpy, m) {
 		.value("NoNavInputs", ImGuiWindowFlags_::ImGuiWindowFlags_NoNavInputs)
 		.value("NoNavFocus", ImGuiWindowFlags_::ImGuiWindowFlags_NoNavFocus)
 		.value("UnsavedDocument", ImGuiWindowFlags_::ImGuiWindowFlags_UnsavedDocument)
+      	.value("NoDocking", ImGuiWindowFlags_::ImGuiWindowFlags_NoDocking)
 		.value("NoNav", ImGuiWindowFlags_::ImGuiWindowFlags_NoNav )
 		.value("NoDecoration", ImGuiWindowFlags_::ImGuiWindowFlags_NoDecoration)
 		.value("NoInputs", ImGuiWindowFlags_::ImGuiWindowFlags_NoInputs)
@@ -716,6 +720,15 @@ PYBIND11_MODULE(_bimpy, m) {
 		.value("BotRight", ImDrawCornerFlags_BotRight)
 		.value("BotLeft", ImDrawCornerFlags_BotLeft)
 		.value("All", ImDrawCornerFlags_All)
+		.export_values();
+
+	py::enum_<ImGuiDockNodeFlags_>(m, "DockNode", py::arithmetic())
+		.value("KeepAliveOnly", ImGuiDockNodeFlags_KeepAliveOnly)
+		.value("NoDockingInCentralNode", ImGuiDockNodeFlags_NoDockingInCentralNode)
+		.value("PassthruCentralNode", ImGuiDockNodeFlags_PassthruCentralNode)
+		.value("NoSplit", ImGuiDockNodeFlags_NoSplit)
+		.value("NoResize", ImGuiDockNodeFlags_NoResize)
+		.value("AutoHideTabBar", ImGuiDockNodeFlags_AutoHideTabBar)
 		.export_values();
 
 	py::class_<Bool>(m, "Bool")
@@ -1710,4 +1723,10 @@ PYBIND11_MODULE(_bimpy, m) {
 	m.attr("key_right_super") = py::int_(GLFW_KEY_RIGHT_SUPER);
 
 	m.def("inject_imgui_context", [](void* other) { GImGui = (ImGuiContext*)other; } );
+
+	m.def("DockSpace", 
+		[](const char* id, const ImVec2& size, ImGuiDockNodeFlags flags) { ImGui::DockSpace(ImGui::GetID(id), size, flags); },
+		py::arg("id"), py::arg("size") = ImVec2(0, 0), py::arg("flags") = 0
+	);
+	m.def("is_window_docked", &ImGui::IsWindowDocked);
 }
