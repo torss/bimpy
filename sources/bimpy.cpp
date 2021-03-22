@@ -54,6 +54,7 @@ public:
 	void Render();
 
 	bool ShouldClose();
+	bool IsWindowIconified() { return (bool)glfwGetWindowAttrib(m_window, GLFW_ICONIFIED); }
 
 	int GetWidth() const;
 
@@ -699,6 +700,7 @@ PYBIND11_MODULE(_bimpy, m) {
 		.def("new_frame", &Context::NewFrame, "Starts a new frame. NewFrame must be called before any imgui functions")
 		.def("render", &Context::Render, "Finalizes the frame and draws all UI. Render must be called after all imgui functions")
 		.def("should_close", &Context::ShouldClose)
+		.def("is_window_iconified", &Context::IsWindowIconified)
 
 		.def_property_readonly("width", &Context::GetWidth)
 		.def_property_readonly("height", &Context::GetHeight)
